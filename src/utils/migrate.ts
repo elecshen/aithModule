@@ -1,5 +1,5 @@
 import { promises as fs } from 'fs';
-import { Migrator, FileMigrationProvider } from 'kysely';
+import { Migrator, FileMigrationProvider, MigrationResultSet, NO_MIGRATIONS } from 'kysely';
 import db from '../db/db';
 import path from 'path';
 
@@ -12,8 +12,24 @@ const migrator = new Migrator({
   })
 });
 
-async function migrateToLatest() {
-  const { error, results } = await migrator.migrateToLatest();
+async function migrate(direction: string) {
+  let migrationResult: MigrationResultSet | undefined = undefined;
+  if(direction === 'up'){
+    migrationResult = await migrator.migrateToLatest();
+  } else if(direction === 'rollback') {
+    migrationResult = await migrator.migrateTo(NO_MIGRATIONS);
+    
+  }
+  if(migrationResult) {
+    serveMigration(migrationResult);
+  } else {
+    console.log('Invalid migration direction. Use "up"(default) or "rollback"')
+  }
+  process.exit(0);
+}
+
+function serveMigration(migrationResult: MigrationResultSet) {
+  const { error, results } = migrationResult;
   results?.forEach((it) => {
     if (it.status === 'Success') {
       console.log(`Migration ${it.migrationName} executed successfully`);
@@ -25,7 +41,7 @@ async function migrateToLatest() {
     console.error('Failed to migrate', error);
     process.exit(1);
   }
-  process.exit(0);
 }
 
-migrateToLatest();
+const direction = process.argv[2] ?? 'up';
+migrate(direction);

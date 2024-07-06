@@ -1,21 +1,25 @@
 import {
-  ColumnType,
   Generated,
   Insertable,
   Selectable,
   Updateable
 } from 'kysely';
 
-export interface UserT {
-	id: Generated<number>;
-	username: string;
-	password: string;
+export interface User {
+  id: Generated<number>;
+  name: string;
+  surname: string;
+  middlename?: string;
+  email: string;
+  username?: string;
+  password: string;
+  is_confirmed: boolean;
 }
 
-export type User = Selectable<UserT>;
-export type NewUser = Insertable<UserT>;
-export type UserUpdate = Updateable<UserT>;
+export type SelectedUser = Selectable<User>;
+export type NewUser = Insertable<User>;
+export type UserUpdate = Updateable<User>;
 
 export interface DB {
-  user: UserT;
+  user: User;
 }

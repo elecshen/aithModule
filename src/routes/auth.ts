@@ -4,7 +4,11 @@ import argon2 from 'argon2';
 import { NewUser } from '../db/schema';
 
 interface RegisterBody {
-  username: string;
+  name: string;
+  surname: string;
+  middlename?: string;
+  email: string;
+  username?: string;
   password: string;
 }
 
@@ -15,10 +19,9 @@ interface LoginBody {
 
 export async function authRoutes(fastify: FastifyInstance) {
   fastify.post<{ Body: RegisterBody }>('/register', async (request, reply) => {
-    const { username, password } = request.body;
-    const hashedPassword = await argon2.hash(password);
+    const hashedPassword = await argon2.hash(request.body.password);
 	
-	  const newUser: NewUser = { username, password: hashedPassword };
+	  const newUser: NewUser = { ...request.body, password: hashedPassword, is_confirmed: false };
 
     await db.insertInto('user').values(newUser).execute();
 
