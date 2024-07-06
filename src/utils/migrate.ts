@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 import { Migrator, FileMigrationProvider, MigrationResultSet, NO_MIGRATIONS } from 'kysely';
-import db from '../db/db';
+import db from '../config/db';
 import path from 'path';
 
 const migrator = new Migrator({
