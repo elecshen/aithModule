@@ -24,10 +24,10 @@ export async function loginHandler(request: FastifyRequest<{ Body: LoginBody }>,
 		return reply.status(400).send(validationResponse);
 	}
 
-  const id = await authService.login(request.body)
-	if(!id) {
+  const tokens = await authService.login(request.body)
+	if(!tokens) {
 		reply.status(400).send({ message: "Invalid username or password" });
 	} else {
-		reply.send({ id });
+		reply.send({ ...tokens });
 	}
 }
