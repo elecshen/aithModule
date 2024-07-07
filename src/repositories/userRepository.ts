@@ -1,5 +1,5 @@
 import db from "../config/db";
-import { NewUser, SelectedUser } from "../db/schema";
+import { NewUser, SelectedUser } from "../models/schema";
 import { RegisterBody } from "../dtos/registerBody";
 
 export async function addUser(user:RegisterBody) : Promise<SelectedUser> {
