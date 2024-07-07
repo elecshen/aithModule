@@ -13,8 +13,15 @@ interface DbConfig {
   database: string | undefined;
 }
 
+interface JWTConfig {
+  secret: string | undefined;
+  accessExpiresIn: string | undefined;
+  refreshExpiresIn: string | undefined;
+}
+
 interface Config {
   db: DbConfig;
+  jwt: JWTConfig;
 }
 
 const config: Config = {
@@ -24,6 +31,11 @@ const config: Config = {
     user: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
+  },
+  jwt: {
+    secret: process.env.JWT_SECRET,
+    accessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN,
+    refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
   },
 };
 
