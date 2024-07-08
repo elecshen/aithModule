@@ -1,5 +1,5 @@
 import jwt, { Secret, SignOptions } from 'jsonwebtoken'
-import { Playload } from '../models/jwtPlayload'
+import { Playload } from '../models/playload.model'
 import config from '../config'
 
 const accessOpt: SignOptions = {

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc",
     "migrate": "npx ts-node ./src/utils/migrate.ts",
     "start": "node ./dist/app.js"
   },

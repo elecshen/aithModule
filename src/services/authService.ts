@@ -3,7 +3,7 @@ import { RegisterBody } from "../dtos/registerBody";
 import * as userRepository from "../repositories/userRepository";
 import * as jwtService from "./jwtService";
 import { LoginBody } from '../dtos/loginBody';
-import { Playload } from '../models/jwtPlayload';
+import { Playload } from '../models/playload.model';
 
 export async function register(user:RegisterBody) {
 	const existed = await userRepository.getUser(user.email);
@@ -24,6 +24,7 @@ export async function login(user:LoginBody) {
 	}
 	const playload: Playload = {
 		id: existed.id,
+		email: existed.email,
 	}
 	return jwtService.generate(playload);
 }
