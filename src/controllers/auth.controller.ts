@@ -31,3 +31,13 @@ export async function loginHandler(request: FastifyRequest<{ Body: LoginBody }>,
 		reply.send({ ...tokens });
 	}
 }
+
+export async function confirm(request: FastifyRequest<{ Querystring: { token: string }}>, reply:FastifyReply) {
+	const token = request.query.token;
+	const result = authService.confirm(token);
+	if(typeof result === 'string') {
+		reply.status(400).send({ message: result });
+	} else {
+		reply.send({ message: "User confirmed" });
+	}
+}

@@ -17,11 +17,22 @@ interface JWTConfig {
   secret: string | undefined;
   accessExpiresIn: string | undefined;
   refreshExpiresIn: string | undefined;
+  confirmExpiresIn: string | undefined;
+}
+
+interface MailConfig {
+  host: string | undefined;
+  port: number | undefined;
+  auth: {
+    user: string | undefined;
+    pass: string | undefined;  
+  }
 }
 
 interface Config {
   db: DbConfig;
   jwt: JWTConfig;
+  mail: MailConfig;
 }
 
 const config: Config = {
@@ -36,7 +47,16 @@ const config: Config = {
     secret: process.env.JWT_SECRET,
     accessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN,
     refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
+    confirmExpiresIn: process.env.JWT_CONFIRM_EXPIRES_IN,
   },
+  mail: {
+    host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT ? parseInt(process.env.MAIL_PORT, 10) : undefined,
+    auth: {
+      user: process.env.MAIL_USERNAME,
+      pass: process.env.MAIL_PASSWORD,
+    }
+  }
 };
 
 export default config;

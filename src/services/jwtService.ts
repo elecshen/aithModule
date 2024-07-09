@@ -1,5 +1,4 @@
-import jwt, { Secret, SignOptions } from 'jsonwebtoken'
-import { Playload } from '../models/playload.model'
+import jwt, { Secret, SignOptions, JwtPayload } from 'jsonwebtoken'
 import config from '../config'
 
 const accessOpt: SignOptions = {
@@ -10,21 +9,28 @@ const refreshOpt: SignOptions = {
 	expiresIn: config.jwt.refreshExpiresIn,
 }
 
-function generateToken(playload: Playload, options: SignOptions) : string {
-	return jwt.sign(playload, config.jwt.secret as Secret, options)
+const confirmOpt: SignOptions = {
+	expiresIn: config.jwt.refreshExpiresIn,
 }
 
-export function generate(playload: Playload) {
+function generateToken(payload: JwtPayload, options: SignOptions) : string {
+	return jwt.sign(payload, config.jwt.secret as Secret, options)
+}
+
+export function generateAuth(payload: JwtPayload) {
 	return {
-		accessToken: generateToken(playload, accessOpt),
-		refreshToken: generateToken(playload, refreshOpt),
+		accessToken: generateToken(payload, accessOpt),
+		refreshToken: generateToken(payload, refreshOpt),
 	}
 }
 
-export function verify(token: string) : Playload | string {
+export function generateConfirm(payload: JwtPayload) {
+	return generateToken(payload, confirmOpt)
+}
+
+export function verify(token: string) : JwtPayload | string {
 	try{
-		const playload = jwt.verify(token, config.jwt.secret as Secret);
-		return playload as Playload;
+		return jwt.verify(token, config.jwt.secret as Secret);
 	} catch(err){
 		if(err instanceof jwt.TokenExpiredError) {
 			return 'Token has expired';

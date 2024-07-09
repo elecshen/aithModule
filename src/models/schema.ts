@@ -20,6 +20,13 @@ export type SelectedUser = Selectable<User>;
 export type NewUser = Insertable<User>;
 export type UserUpdate = Updateable<User>;
 
+export interface Token {
+  value: string;
+  user_id: number;
+  extra?: string;
+}
+
 export interface DB {
   user: User;
+  token: Token;
 }

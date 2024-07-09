@@ -11,6 +11,14 @@ export async function addUser(user:RegisterBody) : Promise<SelectedUser> {
 		.executeTakeFirstOrThrow();
 }
 
+export async function confirmUser(id:number) {
+	return await db
+		.updateTable('user')
+		.set({ is_confirmed: true })
+		.where('id', '=', id)
+		.execute()
+}
+
 export async function getUser(email:string) : Promise<SelectedUser | undefined> {
 	return await db
 		.selectFrom('user')

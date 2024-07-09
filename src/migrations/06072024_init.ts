@@ -12,7 +12,17 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn('password', 'varchar', col => col.notNull())
     .addColumn('is_confirmed', 'boolean', col => col.notNull().defaultTo(false))
     .execute();
+
+  await db.schema
+    .createTable('token')
+    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn('value', 'varchar(255)', (col) => col.notNull())
+    .addColumn('user_id', 'integer', (col) => col.notNull().references('user.id'))
+    .addColumn('extra', 'varchar')
+    .execute();
 };
+
+
 
 export async function down(db: Kysely<any>): Promise<void> {
   await db.schema.dropTable('user').execute();

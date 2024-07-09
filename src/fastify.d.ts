@@ -1,7 +1,7 @@
-import { Playload } from "./models/playload.model";
+import { JwtPayload } from "jsonwebtoken";
 
 declare module 'fastify' {
 	interface FastifyRequest {
-		user: Playload
+		user: JwtPayload
 	}
 }
