@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply, HookHandlerDoneFunction } from "fastify";
 import { verify } from "../services/jwtService";
 
-export const authMiddleware = (request: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction) => {
+export const authMiddleware = (request: FastifyRequest<{Body: any}>, reply: FastifyReply, done: HookHandlerDoneFunction) => {
 	const token = request.headers.authorization?.split(" ")[1];
 
 	if(!token) {

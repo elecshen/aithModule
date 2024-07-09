@@ -1,11 +1,12 @@
 import * as authService from "../services/authService";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { LoginBody } from "../dtos/loginBody";
-import { RegisterBody } from "../dtos/registerBody";
-import { validateRegisterDto, validateLoginDto } from '../validators/dtoValidators';
+import { LoginBody } from "../dtos/login.dto";
+import { RegisterBody } from "../dtos/register.dto";
+import { validateRegisterDto, validateLoginDto, validatePassResetDto } from '../validators/dtoValidators';
+import { PassResetBody } from "../dtos/passReset.dto";
 
 export async function registerHandler(request: FastifyRequest<{ Body: RegisterBody }>, reply:FastifyReply) {
-	const validationResponse  = validateRegisterDto(request.body);
+	const validationResponse = validateRegisterDto(request.body);
 	if(validationResponse !== true) {
 		return reply.status(400).send(validationResponse);
 	}
@@ -19,7 +20,7 @@ export async function registerHandler(request: FastifyRequest<{ Body: RegisterBo
 }
 
 export async function loginHandler(request: FastifyRequest<{ Body: LoginBody }>, reply:FastifyReply) {
-	const validationResponse  = validateLoginDto(request.body);
+	const validationResponse = validateLoginDto(request.body);
 	if(validationResponse !== true) {
 		return reply.status(400).send(validationResponse);
 	}
@@ -32,12 +33,26 @@ export async function loginHandler(request: FastifyRequest<{ Body: LoginBody }>,
 	}
 }
 
-export async function confirm(request: FastifyRequest<{ Querystring: { token: string }}>, reply:FastifyReply) {
-	const token = request.query.token;
-	const result = authService.confirm(token);
+export async function passwordReset(request: FastifyRequest<{ Body: PassResetBody }>, reply:FastifyReply) {
+	const validationResponse = validatePassResetDto(request.body);
+	if(validationResponse !== true) {
+		return reply.status(400).send(validationResponse);
+	}
+
+	const result = await authService.resetPassword(request.body, request.user);
 	if(typeof result === 'string') {
 		reply.status(400).send({ message: result });
 	} else {
-		reply.send({ message: "User confirmed" });
+		reply.send({ message: "Check your email" });
+	}
+}
+
+export async function confirm(request: FastifyRequest<{ Querystring: { token: string }}>, reply:FastifyReply) {
+	const token = request.query.token;
+	const result = await authService.confirm(token);
+	if(typeof result === 'string') {
+		reply.status(400).send({ message: result });
+	} else {
+		reply.send({ message: "Confirmed" });
 	}
 }

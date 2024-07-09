@@ -28,3 +28,14 @@ export async function sendRegConfirm(to: string, token: string) {
 	}
 	sendMail(opt)
 }
+
+export async function sendPassResetConfirm(to: string, token: string) {
+	const confirmLink = `http://localhost:3000/auth/confirm?token=${token}`;
+	const opt: MailOptions = {
+		from: 'noreply@app.ru',
+		to,
+		subject: 'Password reset confirmation',
+		html: `<p>Please confirm your password reset by clicking on the link:</p> <p><a href="${confirmLink}">confirm</a></p>`
+	}
+	sendMail(opt)
+}
