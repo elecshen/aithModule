@@ -26,6 +26,8 @@
     "typescript-eslint": "^7.15.0"
   },
   "dependencies": {
+    "@fastify/swagger": "^8.14.0",
+    "@fastify/swagger-ui": "^4.0.0",
     "argon2": "^0.40.3",
     "dotenv": "^16.4.5",
     "dotenv-expand": "^11.0.6",

@@ -1,18 +1,17 @@
 import Fastify from 'fastify';
 import { authRoutes } from './routes/auth';
+import { setupSwagger } from './config/swagger';
 
 const fastify = Fastify({ logger: true });
 
+setupSwagger(fastify);
 fastify.register(authRoutes, { prefix: '/auth' });
 
-const start = async () => {
-  try {
-    await fastify.listen({port: 3000});
-    fastify.log.info(`Server listening on http://localhost:3000`);
-  } catch (err) {
+fastify.listen({ port:3000 }, (err, address) => {
+  if (err) {
     fastify.log.error(err);
     process.exit(1);
   }
-};
-
-start();
+  fastify.swagger();
+  fastify.log.info(`Server listening at ${address}`);
+});
