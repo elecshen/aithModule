@@ -36,7 +36,7 @@ export async function register(user: RegisterBody) {
 export async function login(user: LoginBody) {
   const existed = await userRepository.getUser(user.email);
   if (!existed || !(await argon2.verify(existed.password, user.password))) {
-    return;
+    return { message: "Invalid username or password" };
   }
   if (!existed.is_confirmed) {
     return { message: "Confirm your email first" };

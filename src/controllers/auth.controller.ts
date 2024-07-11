@@ -36,10 +36,10 @@ export async function loginHandler(
   }
 
   const tokens = await authService.login(request.body);
-  if (!tokens) {
-    reply.status(400).send({ message: "Invalid username or password" });
+  if ("message" in tokens) {
+    reply.status(400).send(tokens);
   } else {
-    reply.send({ ...tokens });
+    reply.send(tokens);
   }
 }
 
