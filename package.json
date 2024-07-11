@@ -1,7 +1,7 @@
 {
   "name": "authmodule",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "build": "tsc",
     "migrate": "npx ts-node ./src/utils/migrate.ts",

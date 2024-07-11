@@ -1,7 +1,7 @@
 import { JwtPayload } from "jsonwebtoken";
 
-declare module 'fastify' {
-	interface FastifyRequest {
-		user: JwtPayload
-	}
+declare module "fastify" {
+  interface FastifyRequest {
+    user: JwtPayload;
+  }
 }

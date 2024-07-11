@@ -1,10 +1,10 @@
-import Validator from 'fastest-validator';
-import { loginDtoSchema } from './validatorSchemas/loginDtoSchema';
-import { registerDtoSchema } from './validatorSchemas/registerDtoSchema';
-import { passResetDtoSchema } from './validatorSchemas/passResetDtoSchema';
+import Validator from "fastest-validator";
+import { loginDtoSchema } from "./validatorSchemas/loginDtoSchema";
+import { registerDtoSchema } from "./validatorSchemas/registerDtoSchema";
+import { passResetDtoSchema } from "./validatorSchemas/passResetDtoSchema";
 
 const v = new Validator({
-	useNewCustomCheckerFunction: true,
+  useNewCustomCheckerFunction: true,
 });
 
 const validateRegisterDto = v.compile(registerDtoSchema);

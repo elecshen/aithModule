@@ -1,8 +1,8 @@
-import dotenv from 'dotenv';
-import dotenvExpand from 'dotenv-expand';
+import dotenv from "dotenv";
+import dotenvExpand from "dotenv-expand";
 
 dotenv.config();
-const env = dotenv.config({ path: 'postgres.secret.env', override: true });
+const env = dotenv.config({ path: "postgres.secret.env", override: true });
 dotenvExpand.expand(env);
 
 interface DbConfig {
@@ -25,8 +25,8 @@ interface MailConfig {
   port: number | undefined;
   auth: {
     user: string | undefined;
-    pass: string | undefined;  
-  }
+    pass: string | undefined;
+  };
 }
 
 interface Config {
@@ -51,12 +51,14 @@ const config: Config = {
   },
   mail: {
     host: process.env.MAIL_HOST,
-    port: process.env.MAIL_PORT ? parseInt(process.env.MAIL_PORT, 10) : undefined,
+    port: process.env.MAIL_PORT
+      ? parseInt(process.env.MAIL_PORT, 10)
+      : undefined,
     auth: {
       user: process.env.MAIL_USERNAME,
       pass: process.env.MAIL_PASSWORD,
-    }
-  }
+    },
+  },
 };
 
 export default config;

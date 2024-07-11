@@ -1,9 +1,4 @@
-import {
-  Generated,
-  Insertable,
-  Selectable,
-  Updateable
-} from 'kysely';
+import { Generated, Insertable, Selectable, Updateable } from "kysely";
 
 export interface User {
   id: Generated<number>;

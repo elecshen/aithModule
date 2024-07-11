@@ -1,20 +1,17 @@
-import globals from "globals";
-import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
-import eslintPluginPrettier from "eslint-plugin-prettier";
 
-export default [
-  {
-    files: ["**/*.{js,mjs,cjs,ts}"],
-    plugin: {
-      eslintPluginPrettier,
-    },
-    rules: {
-      "no-unused-vars": "warn",
+export default tseslint.config({
+  files: ["**/*.ts"],
+  plugins: {
+    "@typescript-eslint": tseslint.plugin,
+  },
+  languageOptions: {
+    parser: tseslint.parser,
+    parserOptions: {
+      project: true,
     },
   },
-  { languageOptions: { ...globals.browser, ...globals.node } },
-  pluginJs.configs.recommended,
-  ...tseslint.configs.strict,
-  ...tseslint.configs.stylistic,
-];
+  rules: {
+    "@typescript-eslint/no-unsafe-return": "error",
+  },
+});
