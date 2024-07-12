@@ -13,19 +13,25 @@ const confirmOpt: SignOptions = {
   expiresIn: config.jwt.refreshExpiresIn,
 };
 
-function generateToken(payload: JwtPayload, options: SignOptions): string {
+export enum TokenTypes {
+  accessToken,
+  refreshToken,
+}
+
+function generateToken(
+  payload: JwtPayload,
+  type: TokenTypes,
+  options: SignOptions,
+): string {
+  payload.type = type;
   return jwt.sign(payload, config.jwt.secret as Secret, options);
 }
 
 export function generateAuth(payload: JwtPayload) {
   return {
-    accessToken: generateToken(payload, accessOpt),
-    refreshToken: generateToken(payload, refreshOpt),
+    accessToken: generateToken(payload, TokenTypes.accessToken, accessOpt),
+    refreshToken: generateToken(payload, TokenTypes.refreshToken, refreshOpt),
   };
-}
-
-export function generateConfirm(payload: JwtPayload) {
-  return generateToken(payload, confirmOpt);
 }
 
 export function verify(token: string): JwtPayload | string {

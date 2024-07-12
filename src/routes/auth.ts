@@ -4,6 +4,7 @@ import {
   registerHandler,
   passwordReset,
   confirm,
+  refresh,
 } from "../controllers/auth.controller";
 import { authMiddleware } from "../middleware/auth.middleware";
 
@@ -70,6 +71,36 @@ const loginSchema = {
   },
 };
 
+const refreshSchema = {
+  tags: ["Auth"],
+  summary: "Refresh a user's token",
+  body: {
+    type: "object",
+    properties: {
+      refreshToken: { type: "string" },
+    },
+    required: ["refreshToken"],
+  },
+  response: {
+    200: {
+      description: "User's token refreshed successfully",
+      type: "object",
+      properties: {
+        accessToken: { type: "string" },
+        refreshToken: { type: "string" },
+      },
+    },
+    400: {
+      description: "Invalid token",
+      type: "object",
+      properties: {
+        message: { type: "string" },
+      },
+    },
+  },
+  security: [{ bearerAuth: [] }],
+};
+
 const confirmSchema = {
   tags: ["Auth"],
   summary: "Confirm user's action",
@@ -131,6 +162,11 @@ const resetPasswordSchema = {
 export async function authRoutes(fastify: FastifyInstance) {
   fastify.post("/register", { schema: registerSchema }, registerHandler);
   fastify.post("/login", { schema: loginSchema }, loginHandler);
+  fastify.post(
+    "/refresh",
+    { preHandler: [authMiddleware], schema: refreshSchema },
+    refresh,
+  );
   fastify.get("/confirm", { schema: confirmSchema }, confirm);
   fastify.post(
     "/reset_pass",

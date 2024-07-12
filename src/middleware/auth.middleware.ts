@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply, HookHandlerDoneFunction } from "fastify";
-import { verify } from "../services/jwtService";
+import { TokenTypes, verify } from "../services/jwtService";
 
 export const authMiddleware = (
   request: FastifyRequest<{ Body: any }>,
@@ -15,6 +15,8 @@ export const authMiddleware = (
   const decoded = verify(token);
   if (typeof decoded === "string") {
     reply.status(401).send({ message: decoded });
+  } else if (decoded.type !== TokenTypes.accessToken) {
+    reply.status(401).send({ message: "Invalid token" });
   } else {
     request.user = decoded;
     done();

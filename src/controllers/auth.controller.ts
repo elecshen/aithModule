@@ -43,6 +43,19 @@ export async function loginHandler(
   }
 }
 
+export async function refresh(
+  request: FastifyRequest<{ Body: { refreshToken: string } }>,
+  reply: FastifyReply,
+) {
+  const token = request.body.refreshToken;
+  const result = await authService.refreshToken(token);
+  if (typeof result === "string") {
+    reply.status(400).send({ message: result });
+  } else {
+    reply.send(result);
+  }
+}
+
 export async function passwordReset(
   request: FastifyRequest<{ Body: PassResetBody }>,
   reply: FastifyReply,

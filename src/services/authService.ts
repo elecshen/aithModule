@@ -41,11 +41,26 @@ export async function login(user: LoginBody) {
   if (!existed.is_confirmed) {
     return { message: "Confirm your email first" };
   }
-  const playload = {
+  const payload = {
     id: existed.id,
     email: existed.email,
   };
-  return jwtService.generateAuth(playload);
+  return jwtService.generateAuth(payload);
+}
+
+export async function refreshToken(token: string) {
+  const decoded = jwtService.verify(token);
+  if (typeof decoded === "string") {
+    return decoded;
+  } else if (decoded.type !== jwtService.TokenTypes.refreshToken) {
+    return "Invalid token";
+  } else {
+    const payload = {
+      id: decoded.id,
+      email: decoded.email,
+    };
+    return jwtService.generateAuth(payload);
+  }
 }
 
 export async function resetPassword(pass: PassResetBody, userInfo: JwtPayload) {
