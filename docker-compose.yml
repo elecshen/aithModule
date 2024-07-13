@@ -1,6 +1,19 @@
 name: dm
 
 services:
+  app:
+    build: .
+    restart: on-failure
+    environment:
+      - DB_HOST=db
+    ports:
+      - 3000:3000
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - postgres
+
   db:
     image: postgres:alpine3.20
     hostname: dbpostgres

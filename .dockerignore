@@ -1,0 +1,11 @@
+.git
+.vscode
+db_data
+dist
+node_modules
+.gitignore
+.prettierrc
+docker-compose.yml
+Dockerfile
+eslint.config.mjs
+readme.md
